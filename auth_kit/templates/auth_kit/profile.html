@@ -23,6 +23,11 @@
                     <a href="{% url 'design_studio:studio' %}" class="btn btn-outline-secondary btn-sm rounded-pill">
                         <i class="bi bi-palette me-1"></i> {% trans "Design Studio öffnen" %}
                     </a>
+                    {% if request.user.is_staff %}
+                    <a href="/admin/" class="btn btn-outline-secondary btn-sm rounded-pill">
+                        <i class="bi bi-shield-lock me-1"></i> {% trans "Django Admin (/admin/)" %}
+                    </a>
+                    {% endif %}
                     <form method="post" action="{% url 'auth_kit:logout' %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill w-100">
