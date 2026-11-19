@@ -5,7 +5,6 @@
 
 {% block content %}
 {% url 'design_studio:studio' as ds_studio_url %}
-{% url 'domain_kit:settings' as domain_settings_url %}
 {% url 'ops_kit:updates' as ops_updates_url %}
 <ul class="nav folder-tabs-bar mb-0" id="authHubTabs" role="tablist">
     <li class="nav-item" role="presentation">
@@ -20,14 +19,7 @@
         </button>
     </li>
     {% endif %}
-    {% if domain_settings_url %}
-    <li class="nav-item" role="presentation">
-        <button class="nav-link" id="tab-domain-btn" data-bs-toggle="tab" data-bs-target="#pane-domain" type="button" role="tab" aria-controls="pane-domain" aria-selected="false">
-            <i class="bi bi-sliders me-1"></i>{% trans "Stammdaten" %}
-        </button>
-    </li>
-    {% endif %}
-    {% if request.user.is_staff and ops_updates_url %}
+    {% if request.user.is_staff and ops_updates_url and cfg %}
     <li class="nav-item" role="presentation">
         <button class="nav-link" id="tab-updates-btn" data-bs-toggle="tab" data-bs-target="#pane-updates" type="button" role="tab" aria-controls="pane-updates" aria-selected="false">
             <i class="bi bi-cloud-download me-1"></i>{% trans "Auto-Updates" %}
@@ -144,40 +136,29 @@
 </div><!-- /pane-profile -->
 {% if ds_studio_url %}
 <div class="tab-pane fade" id="pane-design" role="tabpanel" aria-labelledby="tab-design-btn">
-    <iframe class="w-100 border-0 rounded-4" style="min-height: 75vh; background: transparent;" data-src="{{ ds_studio_url }}?embed=1" title="{% trans 'Design & Menü' %}"></iframe>
+    {% with ds_studio_next=request.path|add:"?tab=design" %}
+        {% include "design_studio/partials/studio_content.html" %}
+    {% endwith %}
 </div>
 {% endif %}
-{% if domain_settings_url %}
-<div class="tab-pane fade" id="pane-domain" role="tabpanel" aria-labelledby="tab-domain-btn">
-    <iframe class="w-100 border-0 rounded-4" style="min-height: 70vh; background: transparent;" data-src="{{ domain_settings_url }}?embed=1" title="{% trans 'Stammdaten' %}"></iframe>
-</div>
-{% endif %}
-{% if request.user.is_staff and ops_updates_url %}
+{% if request.user.is_staff and ops_updates_url and cfg %}
 <div class="tab-pane fade" id="pane-updates" role="tabpanel" aria-labelledby="tab-updates-btn">
-    <iframe class="w-100 border-0 rounded-4" style="min-height: 700px; background: transparent;" data-src="{{ ops_updates_url }}?embed=1" title="{% trans 'Auto-Updates' %}"></iframe>
+    {% with ops_updates_next=request.path|add:"?tab=updates" %}
+        {% include "ops_kit/partials/updates_content.html" %}
+    {% endwith %}
 </div>
 {% endif %}
 </div><!-- /tab-content -->
 <script>
 (function () {
-    function loadTabIframe(sel) {
-        const pane = document.querySelector(sel);
-        if (!pane) return;
-        const iframe = pane.querySelector('iframe[data-src]');
-        if (!iframe || iframe.getAttribute('src')) return;
-        iframe.setAttribute('src', iframe.getAttribute('data-src'));
-        iframe.addEventListener('load', function () {
-            try {
-                const doc = iframe.contentDocument || iframe.contentWindow.document;
-                if (doc && doc.body) {
-                    iframe.style.height = Math.max(doc.body.scrollHeight, doc.documentElement.scrollHeight, 600) + 24 + 'px';
-                }
-            } catch (e) {}
-        });
+    const params = new URLSearchParams(window.location.search);
+    const tab = params.get('tab');
+    if (tab) {
+        const btn = document.getElementById('tab-' + tab + '-btn');
+        if (btn && window.bootstrap && bootstrap.Tab) {
+            bootstrap.Tab.getOrCreateInstance(btn).show();
+        }
     }
-    document.querySelectorAll('#authHubTabs button[data-bs-toggle="tab"]').forEach(function (btn) {
-        btn.addEventListener('shown.bs.tab', function (ev) { loadTabIframe(ev.target.getAttribute('data-bs-target')); });
-    });
 })();
 </script>
 {% endblock %}

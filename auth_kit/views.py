@@ -39,11 +39,14 @@ def profile_view(request):
             return redirect("auth_kit:profile")
     else:
         form = UserProfileForm(instance=profile, user=request.user)
-    return render(
-        request,
-        "auth_kit/profile.html",
-        {"form": form, "profile": profile},
-    )
+    ctx = {"form": form, "profile": profile}
+    if request.user.is_staff:
+        try:
+            from ops_kit.views import get_updates_context
+            ctx.update(get_updates_context())
+        except Exception:
+            pass
+    return render(request, "auth_kit/profile.html", ctx)
 
 
 @login_required
