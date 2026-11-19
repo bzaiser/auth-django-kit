@@ -7,7 +7,7 @@
 {% url 'design_studio:studio' as ds_studio_url %}
 {% url 'domain_kit:settings' as domain_settings_url %}
 {% url 'ops_kit:updates' as ops_updates_url %}
-<ul class="nav nav-tabs ds-tabs mb-3" id="authHubTabs" role="tablist">
+<ul class="nav folder-tabs-bar mb-0" id="authHubTabs" role="tablist">
     <li class="nav-item" role="presentation">
         <button class="nav-link active" id="tab-profile-btn" data-bs-toggle="tab" data-bs-target="#pane-profile" type="button" role="tab" aria-controls="pane-profile" aria-selected="true">
             <i class="bi bi-person-circle me-1"></i>{% trans "Profil" %}
@@ -36,14 +36,14 @@
     {% endif %}
     {% if request.user.is_staff %}
     <li class="nav-item" role="presentation">
-        <a class="nav-link" href="/admin/">
+        <button class="nav-link" id="tab-admin-btn" data-bs-toggle="tab" data-bs-target="#pane-admin" type="button" role="tab" aria-controls="pane-admin" aria-selected="false">
             <i class="bi bi-shield-lock me-1"></i>{% trans "Administration" %}
-        </a>
+        </button>
     </li>
     {% endif %}
 </ul>
 
-<div class="tab-content" id="authHubTabContent">
+<div class="tab-content ds-tab-panel p-3 p-md-4" id="authHubTabContent">
 <div class="tab-pane fade show active" id="pane-profile" role="tabpanel" aria-labelledby="tab-profile-btn">
 <div class="row g-4">
     <div class="col-lg-4">
@@ -161,7 +161,12 @@
 {% endif %}
 {% if request.user.is_staff and ops_updates_url %}
 <div class="tab-pane fade" id="pane-updates" role="tabpanel" aria-labelledby="tab-updates-btn">
-    <iframe class="w-100 border-0 rounded-4" style="min-height: 70vh; background: transparent;" data-src="{{ ops_updates_url }}?embed=1" title="{% trans 'Auto-Updates' %}"></iframe>
+    <iframe class="w-100 border-0 rounded-4" style="min-height: 700px; background: transparent;" data-src="{{ ops_updates_url }}?embed=1" title="{% trans 'Auto-Updates' %}"></iframe>
+</div>
+{% endif %}
+{% if request.user.is_staff %}
+<div class="tab-pane fade" id="pane-admin" role="tabpanel" aria-labelledby="tab-admin-btn">
+    <iframe class="w-100 border-0 rounded-4" style="min-height: 750px; background: transparent;" data-src="/admin/" title="{% trans 'Administration' %}"></iframe>
 </div>
 {% endif %}
 </div><!-- /tab-content -->
