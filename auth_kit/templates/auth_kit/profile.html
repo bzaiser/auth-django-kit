@@ -8,20 +8,20 @@
 {% url 'ops_kit:updates' as ops_updates_url %}
 <ul class="nav folder-tabs-bar mb-0" id="authHubTabs" role="tablist">
     <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="tab-profile-btn" data-bs-toggle="tab" data-bs-target="#pane-profile" type="button" role="tab" aria-controls="pane-profile" aria-selected="true">
+        <button class="nav-link active" id="tab-profile-btn" data-bs-toggle="tab" data-bs-target="#pane-profile" type="button" role="tab" aria-controls="pane-profile" aria-selected="true" title="{% trans 'Profil' %}" aria-label="{% trans 'Profil' %}">
             <i class="bi bi-person-circle me-1"></i>{% trans "Profil" %}
         </button>
     </li>
     {% if ds_studio_url %}
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="tab-design-btn" data-bs-toggle="tab" data-bs-target="#pane-design" type="button" role="tab" aria-controls="pane-design" aria-selected="false">
+        <button class="nav-link" id="tab-design-btn" data-bs-toggle="tab" data-bs-target="#pane-design" type="button" role="tab" aria-controls="pane-design" aria-selected="false" title="{% trans 'Design & Menü' %}" aria-label="{% trans 'Design & Menü' %}">
             <i class="bi bi-palette me-1"></i>{% trans "Design & Menü" %}
         </button>
     </li>
     {% endif %}
     {% if request.user.is_staff and ops_updates_url %}
     <li class="nav-item" role="presentation">
-        <button class="nav-link" id="tab-updates-btn" data-bs-toggle="tab" data-bs-target="#pane-updates" type="button" role="tab" aria-controls="pane-updates" aria-selected="false">
+        <button class="nav-link" id="tab-updates-btn" data-bs-toggle="tab" data-bs-target="#pane-updates" type="button" role="tab" aria-controls="pane-updates" aria-selected="false" title="{% trans 'Auto-Updates' %}" aria-label="{% trans 'Auto-Updates' %}">
             <i class="bi bi-cloud-download me-1"></i>{% trans "Auto-Updates" %}
         </button>
     </li>
