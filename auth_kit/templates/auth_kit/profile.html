@@ -19,7 +19,7 @@
         </button>
     </li>
     {% endif %}
-    {% if request.user.is_staff and ops_updates_url and cfg %}
+    {% if request.user.is_staff and ops_updates_url %}
     <li class="nav-item" role="presentation">
         <button class="nav-link" id="tab-updates-btn" data-bs-toggle="tab" data-bs-target="#pane-updates" type="button" role="tab" aria-controls="pane-updates" aria-selected="false">
             <i class="bi bi-cloud-download me-1"></i>{% trans "Auto-Updates" %}
@@ -141,11 +141,18 @@
     {% endwith %}
 </div>
 {% endif %}
-{% if request.user.is_staff and ops_updates_url and cfg %}
+{% if request.user.is_staff and ops_updates_url %}
 <div class="tab-pane fade" id="pane-updates" role="tabpanel" aria-labelledby="tab-updates-btn">
-    {% with ops_updates_next=request.path|add:"?tab=updates" %}
-        {% include "ops_kit/partials/updates_content.html" %}
-    {% endwith %}
+    {% if cfg %}
+        {% with ops_updates_next=request.path|add:"?tab=updates" %}
+            {% include "ops_kit/partials/updates_content.html" %}
+        {% endwith %}
+    {% else %}
+        <div class="alert alert-warning mb-0 d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <span>{% trans "Auto-Updates noch nicht initialisiert (bitte ops-django-kit aktualisieren und manage.py migrate ausführen)." %}</span>
+            <a href="{{ ops_updates_url }}" class="btn btn-sm btn-primary rounded-pill px-3">{% trans "Direkt öffnen" %}</a>
+        </div>
+    {% endif %}
 </div>
 {% endif %}
 </div><!-- /tab-content -->
