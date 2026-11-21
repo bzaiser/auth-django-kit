@@ -101,6 +101,10 @@ class AuthKitTests(TestCase):
         self.assertEqual(len(self.user.auth_kit_profile.api_token), 48)
 
 
+    def test_no_missing_migrations(self):
+        call_command("makemigrations", "auth_kit", "--check", "--dry-run", verbosity=0)
+
+
 if __name__ == "__main__":
     from django.test.runner import DiscoverRunner
     call_command("migrate", verbosity=0)
