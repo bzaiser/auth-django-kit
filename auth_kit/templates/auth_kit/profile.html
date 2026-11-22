@@ -12,6 +12,13 @@
             <i class="bi bi-person-circle me-1"></i>{% trans "Profil" %}
         </button>
     </li>
+    {% if app_tab_template %}
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="tab-app-btn" data-bs-toggle="tab" data-bs-target="#pane-app" type="button" role="tab" aria-controls="pane-app" aria-selected="false" title="{{ app_tab_label }}" aria-label="{{ app_tab_label }}">
+            <i class="bi {{ app_tab_icon|default:'bi-sliders' }} me-1"></i>{{ app_tab_label }}
+        </button>
+    </li>
+    {% endif %}
     {% if ds_studio_url %}
     <li class="nav-item" role="presentation">
         <button class="nav-link" id="tab-design-btn" data-bs-toggle="tab" data-bs-target="#pane-design" type="button" role="tab" aria-controls="pane-design" aria-selected="false" title="{% trans 'Design & Menü' %}" aria-label="{% trans 'Design & Menü' %}">
@@ -134,6 +141,11 @@
     </div>
 </div>
 </div><!-- /pane-profile -->
+{% if app_tab_template %}
+<div class="tab-pane fade" id="pane-app" role="tabpanel" aria-labelledby="tab-app-btn">
+    {% include app_tab_template %}
+</div>
+{% endif %}
 {% if ds_studio_url %}
 <div class="tab-pane fade" id="pane-design" role="tabpanel" aria-labelledby="tab-design-btn">
     {% with ds_studio_next=request.path|add:"?tab=design" %}
