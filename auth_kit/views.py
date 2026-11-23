@@ -36,7 +36,7 @@ class StudioPasswordChangeView(PasswordChangeView):
 def profile_view(request):
     profile = UserProfile.for_user(request.user)
     if request.method == "POST":
-        form = UserProfileForm(request.POST, instance=profile, user=request.user)
+        form = UserProfileForm(request.POST, request.FILES, instance=profile, user=request.user)
         if form.is_valid():
             form.save()
             messages.success(request, _("Benutzerprofil gespeichert."))

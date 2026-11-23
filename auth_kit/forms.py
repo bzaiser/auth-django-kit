@@ -16,11 +16,13 @@ class UserProfileForm(forms.ModelForm):
             "phone",
             "timezone",
             "language",
+            "avatar",
             "avatar_color",
             "bio",
             "notify_email",
         ]
         widgets = {
+            "avatar": forms.ClearableFileInput(attrs={"accept": "image/*", "class": "form-control form-control-sm"}),
             "avatar_color": forms.TextInput(attrs={"type": "color", "class": "form-control form-control-color"}),
             "bio": forms.Textarea(attrs={"rows": 3}),
         }

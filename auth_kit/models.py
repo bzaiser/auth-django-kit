@@ -15,6 +15,7 @@ class UserProfile(models.Model):
     timezone = models.CharField(max_length=64, blank=True, default="Europe/Berlin")
     language = models.CharField(max_length=16, blank=True, default="de")
     bio = models.TextField(blank=True, default="")
+    avatar = models.FileField(upload_to="auth_kit/avatars/", blank=True, null=True)
     avatar_color = models.CharField(max_length=16, blank=True, default="#0d6efd")
     notify_email = models.BooleanField(default=True)
     api_token = models.CharField(max_length=64, blank=True, default="")
