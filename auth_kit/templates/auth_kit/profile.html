@@ -9,8 +9,8 @@
 {% url 'domain_kit:self_service' as domain_me_url %}
 <ul class="nav folder-tabs-bar mb-0" id="authHubTabs" role="tablist">
     <li class="nav-item" role="presentation">
-        <button class="nav-link active" id="tab-profile-btn" data-bs-toggle="tab" data-bs-target="#pane-profile" type="button" role="tab" aria-controls="pane-profile" aria-selected="true" title="{% trans 'Profil' %}" aria-label="{% trans 'Profil' %}">
-            <i class="bi bi-person-circle me-1"></i>{% trans "Profil" %}
+        <button class="nav-link active" id="tab-profile-btn" data-bs-toggle="tab" data-bs-target="#pane-profile" type="button" role="tab" aria-controls="pane-profile" aria-selected="true" title="{% trans 'Konto & Passwort' %}" aria-label="{% trans 'Konto & Passwort' %}">
+            <i class="bi bi-person-circle me-1"></i>{% trans "Konto & Passwort" %}
         </button>
     </li>
     {% if app_tab_template %}
@@ -20,7 +20,7 @@
         </button>
     </li>
     {% endif %}
-    {% if ds_studio_url %}
+    {% if request.user.is_staff and ds_studio_url %}
     <li class="nav-item" role="presentation">
         <button class="nav-link" id="tab-design-btn" data-bs-toggle="tab" data-bs-target="#pane-design" type="button" role="tab" aria-controls="pane-design" aria-selected="false" title="{% trans 'Design & Menü' %}" aria-label="{% trans 'Design & Menü' %}">
             <i class="bi bi-palette me-1"></i>{% trans "Design & Menü" %}
@@ -30,7 +30,7 @@
     {% if domain_me_url %}
     <li class="nav-item">
         <a class="nav-link" href="{{ domain_me_url }}">
-            <i class="bi bi-person-badge me-1"></i>{% trans "Meine Daten" %}
+            <i class="bi bi-person-badge me-1"></i>{% trans "Mitgliedsdaten & Adresse" %}
         </a>
     </li>
     {% endif %}
