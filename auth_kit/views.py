@@ -61,8 +61,9 @@ def profile_view(request):
         pass
     if request.user.is_staff:
         try:
-            from ops_kit.views import get_updates_context
+            from ops_kit.views import get_backups_context, get_updates_context
             ctx.update(get_updates_context())
+            ctx.update(get_backups_context())
         except Exception:
             pass
     return render(request, "auth_kit/profile.html", ctx)

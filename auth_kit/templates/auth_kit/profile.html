@@ -6,7 +6,27 @@
 {% block content %}
 {% url 'design_studio:studio' as ds_studio_url %}
 {% url 'ops_kit:updates' as ops_updates_url %}
+{% url 'ops_kit:backups' as ops_backups_url %}
 {% url 'domain_kit:self_service' as domain_me_url %}
+{% url 'seed_kit:wizard' as seed_wizard_url %}
+{% url 'list_kit:builder_list' as list_builder_url %}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+    <div>
+        <h1 class="h3 fw-bold mb-1"><i class="bi bi-gear text-primary me-2"></i>{% trans "Einstellungen & Verwaltung" %}</h1>
+        <p class="text-muted small mb-0">{% trans "Konto, Passwort, Design, Auto-Updates und Datensicherung zentral an einem Ort verwalten." %}</p>
+    </div>
+    {% if request.user.is_staff %}
+    <div class="d-flex flex-wrap gap-2">
+        {% if seed_wizard_url %}
+        <a href="{{ seed_wizard_url }}" class="btn btn-sm btn-outline-primary rounded-pill px-3"><i class="bi bi-magic me-1"></i>{% trans "Ersteinrichtung" %}</a>
+        {% endif %}
+        {% if list_builder_url %}
+        <a href="{{ list_builder_url }}" class="btn btn-sm btn-outline-secondary rounded-pill px-3"><i class="bi bi-sliders me-1"></i>{% trans "Listen-Builder" %}</a>
+        {% endif %}
+        <a href="/admin/" class="btn btn-sm btn-outline-secondary rounded-pill px-3"><i class="bi bi-shield-lock me-1"></i>{% trans "Django Admin" %}</a>
+    </div>
+    {% endif %}
+</div>
 <ul class="nav folder-tabs-bar mb-0" id="authHubTabs" role="tablist">
     <li class="nav-item" role="presentation">
         <button class="nav-link active" id="tab-profile-btn" data-bs-toggle="tab" data-bs-target="#pane-profile" type="button" role="tab" aria-controls="pane-profile" aria-selected="true" title="{% trans 'Konto & Passwort' %}" aria-label="{% trans 'Konto & Passwort' %}">
@@ -38,6 +58,13 @@
     <li class="nav-item" role="presentation">
         <button class="nav-link" id="tab-updates-btn" data-bs-toggle="tab" data-bs-target="#pane-updates" type="button" role="tab" aria-controls="pane-updates" aria-selected="false" title="{% trans 'Auto-Updates' %}" aria-label="{% trans 'Auto-Updates' %}">
             <i class="bi bi-cloud-download me-1"></i>{% trans "Auto-Updates" %}
+        </button>
+    </li>
+    {% endif %}
+    {% if request.user.is_staff and ops_backups_url %}
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="tab-backups-btn" data-bs-toggle="tab" data-bs-target="#pane-backups" type="button" role="tab" aria-controls="pane-backups" aria-selected="false" title="{% trans 'Datensicherung' %}" aria-label="{% trans 'Datensicherung' %}">
+            <i class="bi bi-shield-check me-1"></i>{% trans "Datensicherung" %}
         </button>
     </li>
     {% endif %}
@@ -179,6 +206,20 @@
         <div class="alert alert-warning mb-0 d-flex flex-wrap justify-content-between align-items-center gap-2">
             <span>{% trans "Auto-Updates noch nicht initialisiert (bitte ops-django-kit aktualisieren und manage.py migrate ausführen)." %}</span>
             <a href="{{ ops_updates_url }}" class="btn btn-sm btn-primary rounded-pill px-3">{% trans "Direkt öffnen" %}</a>
+        </div>
+    {% endif %}
+</div>
+{% endif %}
+{% if request.user.is_staff and ops_backups_url %}
+<div class="tab-pane fade" id="pane-backups" role="tabpanel" aria-labelledby="tab-backups-btn">
+    {% if cfg %}
+        {% with ops_backups_next=request.path|add:"?tab=backups" %}
+            {% include "ops_kit/partials/backups_content.html" %}
+        {% endwith %}
+    {% else %}
+        <div class="alert alert-warning mb-0 d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <span>{% trans "Datensicherung noch nicht initialisiert." %}</span>
+            <a href="{{ ops_backups_url }}" class="btn btn-sm btn-primary rounded-pill px-3">{% trans "Direkt öffnen" %}</a>
         </div>
     {% endif %}
 </div>
